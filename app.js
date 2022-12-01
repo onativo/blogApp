@@ -1,8 +1,8 @@
 //import modules
-  const express = require('express')
-  const handlebars = require('express-handlebars')
+  import express from 'express'
+  import handlebars from 'express-handlebars'
   const app = express()
-  const admin = require('./routes/admin.cjs')
+  import admin from './routes/admin.js'
   //import mongoose from "mongoose";
 
 //Config

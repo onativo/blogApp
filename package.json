@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "blogapp",
   "version": "1.0.0",
   "description": "",
@@ -14,6 +15,5 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
-  },
-  "type": "module"
+  }
 }
