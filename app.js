@@ -25,6 +25,7 @@
       res.locals.error_msg = req.flash(("error_msg"))
       next()
     })
+    app.use(express.static('public'))
   
   //Body Parser
     app.use(express.urlencoded({extended: true}))
