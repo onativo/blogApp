@@ -9,10 +9,11 @@ router.get('/posts', (req, res) => {
   res.send('Post Page')
 })
 
-router.get('/cad', (req, res) => {
-  res.send('Categories')
+router.get('/categorias', (req, res) => {
+  res.render('./admin/categorias')
 })
-
-
+router.get('/categoria/add', (req, res) => {
+  res.render('./admin/addCategoria')
+})
 
 export default router
