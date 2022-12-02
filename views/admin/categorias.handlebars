@@ -1,3 +1,18 @@
 <h2 class="mt-3">Lista de categorias: </h2>
 <hr>
 <a href="/admin/categoria/add"><button class="btn btn-success">Criar Nova</button></a>
+
+<div class="container">
+  {{#each categorias}}
+    <div class="card mt-2 w-80">
+      <div class="card-body">
+        <h4><strong>Nome: </strong>{{nome}}</h4>
+        <small><strong>Categoria:</strong> {{slug}}</small><br>
+        <small><strong>Data de criação: </strong>{{date}}</small>
+      </div>
+    </div>
+  {{else}}
+
+  {{/each}}
+
+</div>
