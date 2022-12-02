@@ -2,7 +2,10 @@
   import express from 'express'
   import handlebars from 'express-handlebars'
   const app = express()
+  import path from 'path'
   import admin from './routes/admin.js'
+  import {fileURLToPath} from 'url';
+  const __dirname = fileURLToPath(import.meta.url)
   //import mongoose from "mongoose";
 
 //Config
@@ -15,9 +18,12 @@
       allowProtoPropertiesByDefault: true,
       allowProtoMethodsByDefault: true}}))
     app.set('view engine', 'handlebars')
+  
+  //Public
+    app.use(express.static('/public'))
 
-  //Mongoose config
-  ///
+
+
 //Routes
   app.use('/admin', admin)
 //Otehrs
