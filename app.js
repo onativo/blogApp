@@ -39,7 +39,10 @@
   
   //Mongoose
     mongoose.Promise = global.Promise
-    mongoose.connect('mongodb://127.0.0.1:27017/blogApp'
+    mongoose.connect('mongodb://127.0.0.1:27017/blogApp',{
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
     ).then(() => {
       console.log('Successful connection with MongoDB.')
     }).catch((err) => {
@@ -54,6 +57,7 @@
       next()
     })
 
+    
 
 //Routes
   app.use('/admin', admin)
