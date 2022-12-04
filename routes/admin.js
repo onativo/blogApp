@@ -1,27 +1,28 @@
 import express from 'express'
 import Categoria from '../models/Categoria.js'
+import Posts from '../models/Post.js'
 import mongoose from 'mongoose'
 import flash from 'connect-flash'
 
 const router = express.Router()
 const Categorias = mongoose.model('categorias')
+const Post = mongoose.model('posts')
 
-//página de categorias
+//Página de categorias
   router.get('/categorias', (req, res) => {
-    Categorias.find().sort({date: -1}).then((categorias) => {
-      res.render('./admin/categorias', {categorias: categorias})
-    }).catch((err) => {
+    Categorias.find().sort({date: -1})
+    .then((categorias) => {
+      res.render('./admin/categorias', {categorias: categorias})})
+    .catch((err) => {
       req.flash('error_msg', 'Erro ao listar categorias.')
       res.redirect('admin')
     })
   })
-
-//adição de categorias
+//Adição de categorias
   router.get('/categoria/add', (req, res) => {
     res.render('./admin/addCategoria')
   })
-
-//criação de categorias
+//Criação de categorias
   router.post('/categoria/nova', (req, res) => {
     //Form validation
     var errors = []
@@ -40,7 +41,7 @@ const Categorias = mongoose.model('categorias')
         errors: errors
       })
     }else{
-      //Constructor do banco
+      //Constructor
       const novaCategoria = {
         nome: req.body.nome,
         slug: req.body.slug
@@ -49,60 +50,105 @@ const Categorias = mongoose.model('categorias')
       .save()
       .then(() => {
         req.flash('success_msg', 'Categoria adicionada.')
-        res.redirect('/admin/categorias')
-      })
+        res.redirect('/admin/categorias')})
       .catch((err) => {
         req.flash('error_msg', 'Não foi possível criar a categoria.')
         res.redirect('/admin')
       })
     }
   })
-
 //Rota para localizar 'x' categoria
   router.get('/categorias/edit/:id', (req, res) => {
-    Categorias.findOne({_id: req.params.id
-      }).then((categorias) => {
-        res.render('admin/editCategorias', {categoria: categorias})
-      }).catch((err) => {
+    Categorias.findOne({_id: req.params.id})
+    .then((categorias) => {
+        res.render('admin/editCategorias', {categoria: categorias})})
+    .catch((err) => {
         req.flash('error_msg', 'Categoria inválida')
         res.redirect('/admin/categorias')
       })
   })
-
   //Rota para editar categoria
   router.post('/categorias/edit', (req, res) => {
-    Categorias.findOne({
-      _id: req.body.id
-    }).then((categoria) => {
+    Categorias.findOne({_id: req.body.id})
+    .then((categoria) => {
       categoria.nome = req.body.nome
       categoria.slug = req.body.slug
-      categoria.save(
-      ).then(() => {
+      categoria.save()
+      .then(() => {
         req.flash('success_msg', 'Categoria atualizada com sucesso!!')
-        res.redirect('/admin/categorias')
-      }).catch((err) => {
+        res.redirect('/admin/categorias')})
+      .catch((err) => {
         req.flash('error_msg', 'Erro ao salvar a edição')
         res.redirect('/admin/categorias')
-      })
-    }).catch((err) => {
+      })})
+    .catch((err) => {
       req.flash('error_msg', 'Erro ao editar categoria.')
       res.redirect('/admin/categorias')
     })
   })
-
   //Rota para excluir categoria
   router.post('/categorias/excluir', (req, res) => {
-      Categorias.findOne({id: req.body.id}).then((categoria) => {
-        let slug = categoria.slug
-      Categorias.deleteOne({id: req.body.id
-      }).then(() => {
+    Categorias.findOne({id: req.body.id})
+    .then((categoria) => {
+      let slug = categoria.slug
+    Categorias.deleteOne({id: req.body.id})
+      .then(() => {
         req.flash('success_msg', 'Categoria ' + "'" + slug + "'" + ' excluida')
-        res.redirect('/admin/categorias')
-      }).catch((err) => {
-        req.flash('error_msg', 'Não foi possível excluir categoria '+ "'" + slug + "'")
-        res.redirect('/admin/categorias')
+        res.redirect('/admin/categorias')})
+    .catch((err) => {
+      req.flash('error_msg', 'Não foi possível excluir categoria '+ "'" + slug + "'")
+      res.redirect('/admin/categorias')
       })
     })
   })
+  //Rota da página de publicações
+    router.get('/posts', (req, res) => {
+      Post.find()
+      .populate('categoria')
+      .sort({data: 'desc'})
+      .then((posts) => {
+        res.render('admin/posts', {posts: posts})})
+      .catch((err) => {
+        req.flash('error_msg', 'Erro ao listar publicações!')
+        res.redirect('/admin/posts')
+      })
+    })
+  //Rota de criação de publicação
+    router.get('/posts/add', (req, res) => {
+      Categorias.find()
+      .then((categorias) => {
+        res.render('admin/addPost', {categorias: categorias})})
+      .catch((err) => {
+        req.flash('error_msg', 'Erro: ' + err)
+        res.redirect('/admin/posts')
+      })
+    })
+  //Rota de adição de publicações
+    router.post('/posts/new', (req, res) => {
+      var err = []
+      if(req.body.categoria == "0"){
+        err.push({text: 'Categoria inválida, escolha uma categoria.'})
+      }
+      if(err.length > 0){
+        res.render('admin/addPost', {err: err})
+      }else{ 
+        const newPost = {
+          title: req.body.title,
+          slug: req.body.slug,
+          description: req.body.description,
+          content: req.body.content,
+          categoria: req.body.categoria
+        }
+        new Post(newPost)
+        .save()
+        .then(() => {
+            req.flash('success_msg', 'Publicação feita com sucesso!!')
+            res.redirect('/admin/posts')})
+        .catch((err) => {
+          req.flash('error_msg', 'Falha ao salvar publicação ' + err)
+          res.redirect('/admin/posts')
+        })
+      }
+    })
 
 export default router

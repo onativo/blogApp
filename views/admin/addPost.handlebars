@@ -1,0 +1,32 @@
+{{#each err}}
+  <div class="alert alert-danger" style="margin-right: auto; margin-left: auto; margin-top: 1rem; max-width: 60%;">{{text}}</div>
+{{else}}
+
+{{/each}}
+<h4 class="mt-4">Criar nova publicação</h4>
+<div class="card mt-3">
+  <div class="card-body">
+      <form action="/admin/posts/new" method="post">
+        <label for="title" style="margin-bottom: -5px; margin-top: 5px;" aria-required="true">Título: </label>
+        <input type="text" name="title"class="form-control">
+        <label for="slug" style="margin-bottom: -5px; margin-top: 5px;" aria-required="true">Slug: </label>
+        <input type="text" name="slug" class="form-control">
+        <label for="description" style="margin-bottom: -5px; margin-top: 5px;" aria-required="true">Descrição: </label>
+        <input type="text" name="description" class="form-control">
+        <label for="content" style="margin-bottom: -5px; margin-top: 5px;" aria-required="true">Conteúdo: </label>
+        <textarea name="content" cols="30" rows="10" class="form-control"></textarea>
+        <div class="d-flex align-items-center">
+          <label for="categoria" style="margin-bottom: -0.5rem;">Categoria: </label>
+          <select name="categoria" class="mt-3 custom-select" style="max-width: fit-content;" placeholder="art">
+            {{#each categorias}}
+              <option value="{{_id}}">{{nome}}</option>
+            {{else}}
+              <option value="0">Nenhuma categoria selecionada</option>
+            {{/each}}
+          </select><br>
+        </div>
+        <button class="btn btn-outline-primary mt-3" type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
