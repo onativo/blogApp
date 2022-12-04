@@ -7,16 +7,9 @@
   {{#each categorias}}
     <div class="card mt-3 ml-auto mr-auto" style=" max-width: 60%; margin: auto;">
       <div class="card-body">
-        <h4>
-          {{nome}}
-        </h4>
-        <small>
-          <strong>Categoria:</strong>
-          {{slug}}</small><br>
-        <small>
-          <strong>Data de criação: </strong>
-          {{date}}
-        </small><br>
+        <h4>{{nome}}</h4>
+        <small><strong>Categoria: </strong>{{slug}}</small><br>
+        <small><strong>Data de criação: </strong>{{date}}</small><br>
         <div class="d-flex justify-content-between">
           <a href="/admin/categorias/edit/{{id}}">
             <button class="btn btn-outline-primary mt-3">Editar</button>
