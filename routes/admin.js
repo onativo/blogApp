@@ -8,7 +8,7 @@ const Categorias = mongoose.model('categorias')
 
 //página de categorias
   router.get('/categorias', (req, res) => {
-    Categorias.find().sort({date: 'desc'}).then((categorias) => {
+    Categorias.find().sort({date: -1}).then((categorias) => {
       res.render('./admin/categorias', {categorias: categorias})
     }).catch((err) => {
       req.flash('error_msg', 'Erro ao listar categorias.')
@@ -92,13 +92,16 @@ const Categorias = mongoose.model('categorias')
 
   //Rota para excluir categoria
   router.post('/categorias/excluir', (req, res) => {
-    Categorias.deleteOne({id: req.body.id
-    }).then(() => {
-      req.flash('success_msg', 'Categoria excluída.')
-      res.redirect('/admin/categorias')
-    }).catch((err) => {
-      req.flash('error_msg', 'Não foi possível excluir categoria.')
-      res.redirect('/admin/categorias')
+      Categorias.findOne({id: req.body.id}).then((categoria) => {
+        let slug = categoria.slug
+      Categorias.deleteOne({id: req.body.id
+      }).then(() => {
+        req.flash('success_msg', 'Categoria ' + "'" + slug + "'" + ' excluida')
+        res.redirect('/admin/categorias')
+      }).catch((err) => {
+        req.flash('error_msg', 'Não foi possível excluir categoria '+ "'" + slug + "'")
+        res.redirect('/admin/categorias')
+      })
     })
   })
 

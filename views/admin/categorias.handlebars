@@ -3,9 +3,9 @@
 <a href="/admin/categoria/add"><button class="btn btn-primary">Criar Nova</button></a>
 
 
-<div class="mw-60 d-flex">
+{{!-- <div class="mw-60 d-flex"> --}}
   {{#each categorias}}
-    <div class="card mt-2 m-auto">
+    <div class="card mt-3 ml-auto mr-auto" style=" max-width: 60%; margin: auto;">
       <div class="card-body">
         <h4>
           {{nome}}
@@ -28,9 +28,12 @@
         </div>
       </div>
     </div>
+    <div class="d-flex m-auto" style="justify-content: center;">
+      <div style="background-color: #007bff; width: 50px; height: 2.5px; margin-top: 12px; margin-bottom: -1px"></div>
+    </div>
   {{else}}
-      <div class="d-flex m-auto">
-        <img src="/img/such-empty.png" alt="such-empty">
+      <div class="d-flex mt-3">
+        <img src="/img/such-empty.png" alt="such-empty" style="margin: auto">
       </div>
   {{/each}}
-</div>
+{{!-- </div> --}}
