@@ -17,8 +17,8 @@
         <textarea name="content" cols="30" rows="10" class="form-control"></textarea>
         <div class="d-flex align-items-center">
           <label for="categoria" style="margin-bottom: -0.5rem;">Categoria: </label>
-          <select name="categoria" class="mt-3 custom-select" style="max-width: fit-content;" placeholder="art">
-            {{#each categorias}}
+          <select name="categoria" class="mt-3 custom-select" style="max-width: fit-content;">
+            {{#each categoria}}
               <option value="{{_id}}">{{nome}}</option>
             {{else}}
               <option value="0">Nenhuma categoria selecionada</option>
@@ -28,5 +28,4 @@
         <button class="btn btn-outline-primary mt-3" type="submit">Enviar</button>
       </form>
     </div>
-  </div>
 </div>

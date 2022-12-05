@@ -57,6 +57,7 @@ const Post = mongoose.model('posts')
       })
     }
   })
+  
 //Rota para localizar 'x' categoria
   router.get('/categorias/edit/:id', (req, res) => {
     Categorias.findOne({_id: req.params.id})
@@ -150,11 +151,28 @@ const Post = mongoose.model('posts')
         })
       }
     })
+
+  //Rota para localizar 'x' publicação
+  router.get('/posts/edit/:id', (req, res) => {
+    Post.findOne({_id: req.params.id})
+    .then((post) => {
+      Categorias.find()
+        .then((categorias) => {
+          res.render('admin/editPost', {categorias: categorias, posts: post})})  
+        .catch((err) => {
+          req.flash('error_msg', 'Erro ao listar categorias.')
+          res.redirect('/admin/posts')})
+    })
+    .catch((err) => {
+      req.flash('error_msg', 'Publicação não econtrada.')
+      res.redirect('/admin/posts')
+    })
+  })
   //Rota para editar publicação
-    router.post('/post/edit', (req, res) => {
-      Categorias.findOne({_id: req.body.id})
+    router.post('/posts/edit', (req, res) => {
+      Post.findOne({_id: req.body.id})
       .then((post) => {
-        post.nome = req.body.nome
+        post.title = req.body.title
         post.slug = req.body.slug
         post.description = req.body.description
         post.content = req.body.content
@@ -167,8 +185,9 @@ const Post = mongoose.model('posts')
           res.redirect('/admin/posts')
         })})
       .catch((err) => {
-        req.flash('error_msg', 'Erro ao editar Publicação.')
+        req.flash('error_msg', 'Edição cancelada pelo usuário.' + err)
         res.redirect('/admin/posts')
+        console.log(err)
       })
     })
 

@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 const Schema = mongoose.Schema
 
 //Constructor
-  const Post = new Schema({
+  const Posts = new Schema({
     title: {
       type: String,
       required: true
@@ -30,6 +30,6 @@ const Schema = mongoose.Schema
     }
   })
 
-  mongoose.model('posts', Post)
+  mongoose.model('posts', Posts)
 
-  export default Post
+  export default Posts
