@@ -14,13 +14,11 @@
         <small><strong>Data de criação: </strong>{{data}} </small><br>
         <small><strong>Categoria: </strong>{{categoria.nome}}</small>
         <div class="d-flex justify-content-between">
-          <a href="/admin/posts/edit/{{_id}}" >
-            <button class="btn btn-outline-primary mt-3">Editar</button>
-          </a>
-          <form action="/admin/posts/excluir" method="post">
-            <input type="hidden" name="id" value="{{id}}">
-            <button type="submit" class="btn btn-outline-danger mt-3">Exclcuir</button>
-          </form>
+          <a href="/admin/posts/edit/{{_id}}"><button class="btn btn-outline-primary mt-3">Editar</button></a>
+          {{!-- <form action="/admin/posts/excluir" method="post">
+            <input type="hidden" name="id" value="{{id}}"> --}}
+          <a href="/admin/posts/excluir/{{_id}}"><button type="submit" class="btn btn-outline-danger mt-3">Exclcuir</button></a>
+          {{!-- </form> --}}
         </div>
       </div>
     </div>

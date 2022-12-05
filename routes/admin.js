@@ -48,8 +48,9 @@ const Post = mongoose.model('posts')
       }
       new Categorias(novaCategoria)
       .save()
-      .then(() => {
-        req.flash('success_msg', 'Categoria adicionada.')
+      .then((categoria) => {
+        let catName = categoria.nome
+        req.flash('success_msg', 'Categoria ' + "'" + catName + "'" + ' adicionada.')
         res.redirect('/admin/categorias')})
       .catch((err) => {
         req.flash('error_msg', 'Não foi possível criar a categoria.')
@@ -91,15 +92,14 @@ const Post = mongoose.model('posts')
   router.post('/categorias/excluir', (req, res) => {
     Categorias.findOne({id: req.body.id})
     .then((categoria) => {
-      let slug = categoria.slug
+      let cat = categoria.nome
     Categorias.deleteOne({id: req.body.id})
       .then(() => {
-        req.flash('success_msg', 'Categoria ' + "'" + slug + "'" + ' excluida')
+        req.flash('success_msg', 'Categoria ' + "'" + cat + "'" + ' excluida')
         res.redirect('/admin/categorias')})
-    .catch((err) => {
-      req.flash('error_msg', 'Não foi possível excluir categoria '+ "'" + slug + "'")
-      res.redirect('/admin/categorias')
-      })
+      .catch((err) => {
+        req.flash('error_msg', 'Não foi possível excluir categoria '+ "'" + slug + "'")
+        res.redirect('/admin/categorias')})
     })
   })
   //Rota da página de publicações
@@ -185,13 +185,35 @@ const Post = mongoose.model('posts')
           res.redirect('/admin/posts')
         })})
       .catch((err) => {
-        req.flash('error_msg', 'Edição cancelada pelo usuário.' + err)
+        req.flash('error_msg', 'Edição cancelada pelo usuário: ' + err)
         res.redirect('/admin/posts')
         console.log(err)
       })
     })
+    // //Rota para excuir publicações
+    router.get('/posts/excluir/:id', (req, res) => {
+      Post.findOne({id: req.body.id})
+      .then((post) => {
+        let titulo = post.title
+      Post.deleteOne({_id: req.params.id})
+        .then(() => {
+          req.flash('success_msg', 'Publicação ' + "'" + titulo + "'" + ' excluida com sucesso')
+          res.redirect('admin/posts')})
+        .catch((err) => {
+          req.flash('error_msg', 'Impossivel excluir publicação devido a: ' + err)})
+          res.redirect('/admin/posts')
+      })
+    })
 
-
+    //2ª Rota para excluir publicações
+    // router.get('/posts/excluir/:id', (req, res) => {
+    //   Post.remove({_id: req.params.id})
+    //   .then(() => {
+    //     res.redirect('/admin/posts')
+    //   })
+    //   .catch((err) => {
+    //   })
+    // })
 
 
 
