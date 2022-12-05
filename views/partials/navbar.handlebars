@@ -1,7 +1,18 @@
 <nav class="navbar navbar-light bg-light">
+  <div class="dropdown mr-5">
+  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Menu
+  </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="/admin/categorias">Categorias salvas</a>
+      <a class="dropdown-item" href="/admin/categoria/add">Criar uma categoria</a>
+      <a class="dropdown-item" href="/admin/posts">Minhas publicações</a>
+      <a class="dropdown-item" href="/admin/posts/add">Publicar algo novo</a>
+    </div>
+  </div>
   <a class="navbar-brand" href="/admin/categorias">
     <img src="/img/death-star-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     That's no moon
   </a>
-  <a href="/admin/posts/add"><button class="btn btn-primary" type="submit">Criar Publicação</button></a>
+  {{!-- <a href="/admin/posts/add"><button class="btn btn-primary" type="submit">Criar Publicação</button></a> --}}
 </nav>
