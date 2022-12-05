@@ -150,5 +150,30 @@ const Post = mongoose.model('posts')
         })
       }
     })
+  //Rota para editar publicação
+    router.post('/post/edit', (req, res) => {
+      Categorias.findOne({_id: req.body.id})
+      .then((post) => {
+        post.nome = req.body.nome
+        post.slug = req.body.slug
+        post.description = req.body.description
+        post.content = req.body.content
+        post.save()
+        .then(() => {
+          req.flash('success_msg', 'Publicação atualizada com sucesso!!')
+          res.redirect('/admin/posts')})
+        .catch((err) => {
+          req.flash('error_msg', 'Erro ao salvar a edição. Tente novamente.')
+          res.redirect('/admin/posts')
+        })})
+      .catch((err) => {
+        req.flash('error_msg', 'Erro ao editar Publicação.')
+        res.redirect('/admin/posts')
+      })
+    })
+
+
+
+
 
 export default router
