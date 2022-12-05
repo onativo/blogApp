@@ -7,7 +7,9 @@
   import mongoose from 'mongoose'
   import flash from 'connect-flash'
   import session from 'express-session'
+  import Posts from './models/Post.js';
 
+  const Post = mongoose.model('posts')
   const app = express()
   const __dirname = fileURLToPath(import.meta.url)
 
@@ -61,8 +63,40 @@
 
 //Routes
   app.use('/admin', admin)
+
+  app.get('/', (req, res) => {
+    Post.find()
+    .lean()
+    .populate('categoria')
+    .sort({data: 'desc'})
+    .then((posts) => {
+      res.render('index', {posts: posts})})
+    .catch((err) => {
+      req.flash('error_msg', 'Erro ao carregar as publicações' + err)
+      res.redirect('/404')
+    })
+  })
+
+  app.get('/404', (req, res) => {
+    res.send('Erro 404!')
+  })
+
+  app.get('/post/:slug', (req, res) => {
+    Post.findOne({slug: req.params.slug})
+    .then((post) => {
+      if(post){
+        res.render('post/index', {post: post})
+      }else{
+        req.flash('error_msg', 'Desculpe! Publicação não encontrada')
+        res.redirect('/')}
+      })
+    .catch((err) => {
+      req.flash('error_msg', 'Publicação inexistente' + err)
+      res.redirect('/')
+    })
+  })
+
 //Otehrs
   const PORT = 8082
   app.listen(PORT, () => {
-    console.log('Connected.')
-  })
+    console.log('Connected.')})
