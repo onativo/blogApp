@@ -7,11 +7,10 @@
   import mongoose from 'mongoose'
   import flash from 'connect-flash'
   import session from 'express-session'
-  import Posts from './models/Post.js';
+  import Post from './models/Post.js';
 
-  const Post = mongoose.model('posts')
+  const Posts = mongoose.model('posts')
   const app = express()
-  const __dirname = fileURLToPath(import.meta.url)
 
 //Config
   //Session
@@ -65,7 +64,7 @@
   app.use('/admin', admin)
 
   app.get('/', (req, res) => {
-    Post.find()
+    Posts.find()
     .lean()
     .populate('categoria')
     .sort({data: 'desc'})
@@ -82,17 +81,17 @@
   })
 
   app.get('/post/:slug', (req, res) => {
-    Post.findOne({slug: req.params.slug})
+    Posts.findOne({slug: req.params.slug})
     .then((post) => {
       if(post){
         res.render('post/index', {post: post})
       }else{
         req.flash('error_msg', 'Desculpe! Publicação não encontrada')
-        res.redirect('/')}
+        res.redirect('/cartegorias')}
       })
     .catch((err) => {
       req.flash('error_msg', 'Publicação inexistente' + err)
-      res.redirect('/')
+      res.redirect('/posts')
     })
   })
 
