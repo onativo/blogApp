@@ -1,6 +1,7 @@
 //import modules
   import express from 'express'
   import handlebars from 'express-handlebars'
+  import Handlebars from 'handlebars/runtime.js'
   import path from 'path'
   import admin from './routes/admin.js'
   import {fileURLToPath} from 'url';
@@ -8,9 +9,13 @@
   import flash from 'connect-flash'
   import session from 'express-session'
   import Post from './models/Post.js';
-
+  import Categorias from './models/Categoria.js'
+  
+  const Categoria = mongoose.model('categorias')
   const Posts = mongoose.model('posts')
   const app = express()
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
 
 //Config
   //Session
@@ -26,11 +31,12 @@
       res.locals.error_msg = req.flash(("error_msg"))
       next()
     })
-    app.use(express.static('public'))
+    app.use(express.static(path.join(__dirname, '/public')))
   
   //Body Parser
     app.use(express.urlencoded({extended: true}))
     app.use(express.json())
+
   //Handlebars
     app.engine('handlebars', handlebars.engine({ defaultLayout: 'main',
       runtimeOptions:{
@@ -75,25 +81,35 @@
       res.redirect('/404')
     })
   })
-
-  app.get('/404', (req, res) => {
-    res.send('Erro 404!')
-  })
-
-  app.get('/post/:slug', (req, res) => {
-    Posts.findOne({slug: req.params.slug})
-    .then((post) => {
-      if(post){
-        res.render('post/index', {post: post})
-      }else{
-        req.flash('error_msg', 'Desculpe! Publicação não encontrada')
-        res.redirect('/cartegorias')}
+    app.get('/post/:slug', (req, res) => {
+      Posts.findOne({slug: req.params.slug})
+      .then((post) => {
+        if(post){
+          res.render('post/index', {post: post})
+        }else{
+          req.flash('error_msg', 'Desculpe! Publicação não encontrada')
+          res.redirect('/cartegorias')}
+        })
+      .catch((err) => {
+          req.flash('error_msg', 'Publicação inexistente' + err)
+          res.redirect('/posts')
       })
-    .catch((err) => {
-      req.flash('error_msg', 'Publicação inexistente' + err)
-      res.redirect('/posts')
     })
-  })
+    
+    app.get('/404', (req, res) => {
+      res.send('Erro 404!')
+    })
+
+    app.get('/categorias', (req, res) => {
+      Categoria.find()
+      .then((categoria) => {
+        res.render('categorias/index', {categorias: Categorias})
+      })
+      .catch((err) => {
+        req.flash('error_msg', 'Erro ao listar categorias' + err)
+        res.redirect('/')
+      })
+    })
 
 //Otehrs
   const PORT = 8082
