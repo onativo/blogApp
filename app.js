@@ -102,8 +102,8 @@
 
     app.get('/categorias', (req, res) => {
       Categoria.find()
-      .then((categoria) => {
-        res.render('categorias/index', {categorias: Categorias})
+      .then((categorias ) => {
+        res.render('categorias/index', {categorias : categorias})
       })
       .catch((err) => {
         req.flash('error_msg', 'Erro ao listar categorias' + err)
