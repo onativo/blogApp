@@ -264,3 +264,24 @@ Template sidebar
 .media-body h5 a:hover {
   color: #4782d3;
 }
+
+.card-hr{
+  max-width: 10%;
+  margin-right: auto;
+  margin-left: 20%;
+  margin-bottom: -15px;
+  margin-top: -15px;
+}
+
+.categorias-card{
+  max-width: 50%;
+}
+.label-form{
+  margin-bottom: -10px;
+}
+.form{
+  margin-top: 2rem;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}

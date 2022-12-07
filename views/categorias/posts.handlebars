@@ -1,0 +1,23 @@
+
+<h1>{{categoria.nome}}</h1>
+<hr>
+{{#each posts}}
+  <div class="card mt-3">
+    <div class="card-body">
+      <h4>{{title}}</h4>
+      <p>{{description}}</p>
+      <a href="/post/{{slug}}"class="btn btn-outline-primary">Ler mais...</a>
+      <hr>
+      <small>Categoria: {{categoria.nome}}</small>
+      <br>
+      <small>Publicado em: {{data}}</small>
+    </div>
+  </div>
+  <div>
+    <hr style="max-width: 10%; margin-left: auto; margin-right: auto;">
+  </div>
+{{else}}
+  <div class="d-flex mt-3">
+    <img src="/img/such-empty.png" alt="such-empty" style="margin: auto">
+  </div>
+{{/each}}

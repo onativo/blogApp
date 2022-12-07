@@ -10,7 +10,9 @@
   import session from 'express-session'
   import Post from './models/Post.js';
   import Categorias from './models/Categoria.js'
-  
+  import User from './models/User.js'  
+
+  const Users = mongoose.model('users')
   const Categoria = mongoose.model('categorias')
   const Posts = mongoose.model('posts')
   const app = express()
@@ -67,8 +69,10 @@
     
 
 //Routes
-  app.use('/admin', admin)
+  //Rota do admin
+    app.use('/admin', admin)
 
+  //Rota da main page
   app.get('/', (req, res) => {
     Posts.find()
     .lean()
@@ -81,35 +85,68 @@
       res.redirect('/404')
     })
   })
-    app.get('/post/:slug', (req, res) => {
-      Posts.findOne({slug: req.params.slug})
-      .then((post) => {
-        if(post){
-          res.render('post/index', {post: post})
-        }else{
-          req.flash('error_msg', 'Desculpe! Publicação não encontrada')
-          res.redirect('/cartegorias')}
-        })
-      .catch((err) => {
-          req.flash('error_msg', 'Publicação inexistente' + err)
-          res.redirect('/posts')
-      })
-    })
-    
-    app.get('/404', (req, res) => {
-      res.send('Erro 404!')
-    })
 
-    app.get('/categorias', (req, res) => {
-      Categoria.find()
-      .then((categorias ) => {
-        res.render('categorias/index', {categorias : categorias})
+  //Rota da página inicial que leva a 'x' publicação
+  app.get('/post/:slug', (req, res) => {
+    Posts.findOne({slug: req.params.slug})
+    .then((post) => {
+      if(post){
+        res.render('post/index', {post: post})
+      }else{
+        req.flash('error_msg', 'Desculpe! Publicação não encontrada')
+        res.redirect('/cartegorias')}
       })
-      .catch((err) => {
-        req.flash('error_msg', 'Erro ao listar categorias' + err)
-        res.redirect('/')
-      })
+    .catch((err) => {
+        req.flash('error_msg', 'Publicação inexistente' + err)
+        res.redirect('/posts')
     })
+  })
+    
+  //Rota de página não encontrada
+  app.get('/404', (req, res) => {
+    res.send('Erro 404!')
+  })
+
+  //Rota da página de categorias
+  app.get('/categorias', (req, res) => {
+    Categoria.find()
+    .then((categorias ) => {
+      res.render('categorias/index', {categorias : categorias})
+    })
+    .catch((err) => {
+      req.flash('error_msg', 'Erro ao listar categorias' + err)
+      res.redirect('/')
+    })
+  })
+
+  //Rota que lista todas publicações de 'x' categoria
+  app.get('/categorias/:slug', (req, res) => {
+    Categoria.findOne({slug: req.params.slug})
+    .then((categoria) => {
+      if(categoria){
+        Posts.find({categoria: categoria._id})
+        .then((posts) => {
+          res.render('categorias/posts', {posts: posts, categoria: categoria})
+        })
+        .catch((err) => {
+          req.flash('error_msg', 'Erro ao listar publicações')
+          res.redirect('/')
+        })
+      }else{
+        req.flash('error_msg', 'Esta categoria não tem publicações')
+        res.redirect('/')
+      }
+    })
+    .catch((err) => {
+      req.flash('error_msg', 'Erro ao listar publicações desta categoria')
+      res.redirect('/')
+    })
+  })
+
+  //Rota de cadastro de usuario
+  app.get('/usuario', (req, res) => {
+    res.render('users/registro')
+  })
 
 //Otehrs
   const PORT = 8082

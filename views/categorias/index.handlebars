@@ -1,7 +1,13 @@
 <h4>Categorias salvas</h4>
-
+<hr>
 {{#each categorias}}
-  <h4>{{nome}}</h4>
+
+  <div class="list-group list-group-flush p-3 categorias-card">
+    <a href="categorias/{{slug}}" class="list-group-item list-group-item-action">{{nome}}</a>
+  </div>
+  <div class="card-hr">
+    <hr>
+  </div>
 {{else}}
 
 {{/each}}
