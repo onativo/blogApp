@@ -14,11 +14,13 @@
 <body>
   {{> navbar}}
   <div class="container">
-    {{#each error}}
-      <div class="alert alerd-danger">{{this.error}}</div>
+    {{#if error}}
+      <div class="alert alert-danger msg_alert">
+        <small>{{error}}</small>
+      </div>
     {{else}}
     {{!-- /// --}}
-    {{/each}}
+    {{/if}}
     {{> msg}}
     {{{body}}}
   </div>

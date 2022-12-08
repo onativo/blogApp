@@ -1,19 +1,19 @@
-<h3 style="margin-top: 2rem; display: flex; justify-content: center">Login</h3>
+<h3 class="h1_login">Login</h3>
 <div class="card form" style="max-width: 70%;">
   <div class="card-body">
-    <form method="post" action="./login">
+    <form action="./login" method="post">
       <div class="form-group">
-        <label for="exampleInputEmail1">E-mail</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Seu email">
+        <label for="email">E-mail</label>
+          <input type="email" name="email" class="form-control" placeholder="Seu email" required>
         <small id="email" class="form-text text-muted">Nós nunca vamos compartilhar seu email, com ninguém.</small>
       </div>
       <div class="form-group">
         <label for="password">Senha</label>
-        <input type="password" class="form-control" id="password" placeholder="Senha">
+          <input type="password" class="form-control" name="password" placeholder="Senha" required>
       </div>
       <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="lembrar">
-        <label class="form-check-label" for="lembrar">Salvar login</label>
+        <input type="checkbox" class="form-check-input" name="saveLogin">
+          <label class="form-check-label" for="saveLogin">Salvar login</label>
       </div>
       <br>
       <button type="submit" class="btn btn-outline-primary">Entrar</button>

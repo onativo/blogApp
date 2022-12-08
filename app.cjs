@@ -5,7 +5,6 @@ const path = require('path')
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const session = require('express-session')
-const passport = require('passport')
 require('./models/Post.cjs')
 const Posts = mongoose.model('posts')
 require('./models/Categoria.cjs')
@@ -14,6 +13,8 @@ require('./models/User.js')
 const User = mongoose.model('users')
 const user = require('./routes/user.cjs')
 const admin = require('./routes/admin.cjs')
+const passport = require('passport')
+require('./config/auth.cjs')(passport)
 
 
 //Config

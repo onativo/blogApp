@@ -1,17 +1,11 @@
-// import express from "express";
-// import mongoose from "mongoose";
-// import Users from '../models/User.js'
-// import bcrypt from 'bcryptjs'
-// import passport from "passport";
-// import localStrategy from 'passport-local'
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 
-require('../models/User.js')
-const user = mongoose.model('users')
+require('../models/User')
+const User = mongoose.model('users')
 
 
 router.get('/cadastro', (req, res) => {
@@ -66,13 +60,14 @@ router.post('/cadastro', (req, res) => {
               res.redirect('/user/cadastro')
             }else{
               newUser.password = hash
-              newUser.save().then(() => {
+              newUser.save()
+              .then(() => {
                 req.flash('success_msg', 'O usuário ' + "'" + userName + "'" + ' foi cadastrado.')
                 res.redirect('/user/cadastro')
               })
               .catch((err) => {
                 req.flash('error_msg', 'Ocoreu o seguinte erro: ' + err)
-                res.redirect('/user/cadastro')
+                res.redirect('user/cadastro')
               })
             }
           })
@@ -92,9 +87,9 @@ router.post('/cadastro', (req, res) => {
   })
 
   router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
+    passport.authenticate("local", {
       successRedirect: '/',
-      failureRedirect: './login',
+      failureRedirect: '/user/cadastro',
       failureFlash: true
     })(req, res, next)
   })
