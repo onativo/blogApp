@@ -14,6 +14,7 @@
   "author": "vini",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.3",
     "connect-flash": "^0.1.1",
     "express": "^4.18.2",

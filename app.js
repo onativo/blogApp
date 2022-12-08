@@ -10,9 +10,9 @@
   import session from 'express-session'
   import Post from './models/Post.js';
   import Categorias from './models/Categoria.js'
-  import User from './models/User.js'  
+  import user from './routes/user.js'
 
-  const Users = mongoose.model('users')
+  const users = mongoose.model('users')
   const Categoria = mongoose.model('categorias')
   const Posts = mongoose.model('posts')
   const app = express()
@@ -66,11 +66,12 @@
       next()
     })
 
-    
-
 //Routes
   //Rota do admin
     app.use('/admin', admin)
+    
+    //Rota de usuários
+    app.use('/user', user)
 
   //Rota da main page
   app.get('/', (req, res) => {
@@ -144,11 +145,11 @@
   })
 
   //Rota de cadastro de usuario
-  app.get('/usuario', (req, res) => {
-    res.render('users/registro')
-  })
+  // app.get('/users', (req, res) => {
+  //   res.render('users/cadastro')
+  // })
 
 //Otehrs
   const PORT = 8082
   app.listen(PORT, () => {
-    console.log('Connected.')})
+    console.log('...connected.')})
