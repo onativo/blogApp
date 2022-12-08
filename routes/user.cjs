@@ -1,11 +1,18 @@
-import express from "express";
-import mongoose from "mongoose";
-import Users from '../models/User.js'
-import bcrypt from 'bcryptjs'
-
+// import express from "express";
+// import mongoose from "mongoose";
+// import Users from '../models/User.js'
+// import bcrypt from 'bcryptjs'
+// import passport from "passport";
+// import localStrategy from 'passport-local'
+const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
+const passport = require('passport')
 
-const User = mongoose.model('users')
+require('../models/User.js')
+const user = mongoose.model('users')
+
 
 router.get('/cadastro', (req, res) => {
   res.render('users/cadastro')
@@ -39,8 +46,8 @@ router.post('/cadastro', (req, res) => {
   else{
     User.findOne({email: req.body.email})
     .then((user) => {
-      const userEmail = user.email
       if(user){
+        const userEmail = user.email
         req.flash('error_msg', 'Já existe uma conta com o email: ' + "'" + userEmail + "' .")
         res.redirect('/user/cadastro')
       }else{
@@ -73,11 +80,23 @@ router.post('/cadastro', (req, res) => {
       }
     })
     .catch((err) => {
-      req.flash('error_msg', 'Houve um erro, tente novamente. ' + err)
+      req.flash('error_msg', 'Houve um erro. Contate o suporte. ' + err)
       res.redirect('/user/cadastro')
     })
   }
 })
 
+  //Rota de login
+  router.get('/login', (req, res) => {
+    res.render('users/login')
+  })
 
-export default router
+  router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: './login',
+      failureFlash: true
+    })(req, res, next)
+  })
+
+module.exports = router

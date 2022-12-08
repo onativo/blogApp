@@ -1,23 +1,20 @@
-//import modules
-  import express from 'express'
-  import handlebars from 'express-handlebars'
-  import Handlebars from 'handlebars/runtime.js'
-  import path from 'path'
-  import admin from './routes/admin.js'
-  import {fileURLToPath} from 'url';
-  import mongoose from 'mongoose'
-  import flash from 'connect-flash'
-  import session from 'express-session'
-  import Post from './models/Post.js';
-  import Categorias from './models/Categoria.js'
-  import user from './routes/user.js'
+const express = require('express')
+const handlebars = require('express-handlebars')
+const app = express()
+const path = require('path')
+const mongoose = require('mongoose')
+const flash = require('connect-flash')
+const session = require('express-session')
+const passport = require('passport')
+require('./models/Post.cjs')
+const Posts = mongoose.model('posts')
+require('./models/Categoria.cjs')
+const Categoria = mongoose.model('categorias')
+require('./models/User.js')
+const User = mongoose.model('users')
+const user = require('./routes/user.cjs')
+const admin = require('./routes/admin.cjs')
 
-  const users = mongoose.model('users')
-  const Categoria = mongoose.model('categorias')
-  const Posts = mongoose.model('posts')
-  const app = express()
-  const __filename = fileURLToPath(import.meta.url)
-  const __dirname = path.dirname(__filename)
 
 //Config
   //Session
@@ -26,14 +23,16 @@
       resave: true,
       saveUninitialized: true
     }))
+    app.use(passport.initialize())
+    app.use(passport.session())
     app.use(flash())
   //Middleware
     app.use((req, res, next) => {
-      res.locals.success_msg = req.flash(("success_msg"))
-      res.locals.error_msg = req.flash(("error_msg"))
+      res.locals.success_msg = req.flash('success_msg')
+      res.locals.error_msg = req.flash('error_msg')
+      res.locals.error = req.flash('error')
       next()
     })
-    app.use(express.static(path.join(__dirname, '/public')))
   
   //Body Parser
     app.use(express.urlencoded({extended: true}))
@@ -59,8 +58,9 @@
     })
 
   //Public
-    app.use(express.static('/public'))
-
+    // app.use(express.static('/public'))
+    // app.use(express.static(path.join(__dirname, '/public')))
+    app.use(express.static(path.join(__dirname, "public")))
     app.use((req, res, next) => {
       console.log('kambum!')
       next()

@@ -1,12 +1,18 @@
-import express from 'express'
-import Categoria from '../models/Categoria.js'
-import Posts from '../models/Post.js'
-import mongoose from 'mongoose'
-import flash from 'connect-flash'
+// import express from 'express'
+// import Categoria from '../models/Categoria.js'
+// import Posts from '../models/Post.js'
+// import mongoose from 'mongoose'
+// import flash from 'connect-flash'
 
+const express = require('express')
+const mongoose = require('mongoose')
+const flash = require('connect-flash')
 const router = express.Router()
 const Categorias = mongoose.model('categorias')
 const Post = mongoose.model('posts')
+
+require('../models/Categoria.cjs')
+require('../models/Post.cjs')
 
 //Página de categorias
   router.get('/categorias', (req, res) => {
@@ -217,4 +223,4 @@ const Post = mongoose.model('posts')
 
 
 
-export default router
+module.exports = router

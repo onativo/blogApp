@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 //Constructor
@@ -21,4 +21,4 @@ const Schema = mongoose.Schema
 
 mongoose.model('categorias', Categoria)
 
-export default Categoria
+module.exports = Categoria

@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 //Constructor
@@ -32,4 +32,4 @@ const Schema = mongoose.Schema
 
   mongoose.model('posts', Posts)
 
-  export default Posts
+  module.exports = Posts
