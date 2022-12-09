@@ -2,10 +2,10 @@
   "type": "commonjs",
   "name": "blogapp",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.cjs"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }

@@ -15,6 +15,7 @@ const user = require('./routes/user.cjs')
 const admin = require('./routes/admin.cjs')
 const passport = require('passport')
 require('./config/auth.cjs')(passport)
+const dbConfig = require('./config/dbConfig')
 
 
 //Config
@@ -49,7 +50,7 @@ require('./config/auth.cjs')(passport)
   
   //Mongoose
     mongoose.Promise = global.Promise
-    mongoose.connect('mongodb://127.0.0.1:27017/blogApp',{
+    mongoose.connect(dbConfig.mongoURI,{
       useNewUrlParser: true,
       useUnifiedTopology: true
     }
@@ -152,6 +153,6 @@ require('./config/auth.cjs')(passport)
   // })
 
 //Otehrs
-  const PORT = 8082
+  const PORT = process.env.PORT || 9229
   app.listen(PORT, () => {
     console.log('...connected.')})

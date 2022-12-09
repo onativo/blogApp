@@ -214,7 +214,7 @@ router.get('/', isAdmin, (req, res) => {
   })
 
 //Rota da página de usuários cadastrados
-  router.get('/users', (req, res) => {
+  router.get('/users', isAdmin, (req, res) => {
     User.find()
     .sort({data: -1})
     .then((users) => {
@@ -225,7 +225,7 @@ router.get('/', isAdmin, (req, res) => {
     })
   })
 //Rota para localizar 'x' usuário
-  router.get('/users/edit/:id', (req, res) => {
+  router.get('/users/edit/:id', isAdmin, (req, res) => {
     User.findOne({_id: req.params.id})
     .then((user) => {
       res.render('admin/editUser', {user: user})
@@ -236,7 +236,7 @@ router.get('/', isAdmin, (req, res) => {
     })
   })
 //Rota para excluir um usuário
-  router.get('/users/excluir/:id', (req, res) => {
+  router.get('/users/excluir/:id', isAdmin, (req, res) => {
     User.findOne({id:req.body.id})
     .then((user) => {
       let userName = user.name
