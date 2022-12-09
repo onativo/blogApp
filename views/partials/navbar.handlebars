@@ -1,15 +1,34 @@
 <nav class="navbar navbar-light bg-light">
-  <div class="dropdown mr-5">
-  <button class="btn btn-outline-primary dropdown-toggle menu-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Menu
-  </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="/categorias">Categorias salvas</a>
-      <a class="dropdown-item" href="/admin/categoria/add">Criar uma categoria</a>
-      <a class="dropdown-item" href="/admin/posts">Minhas publicações</a>
-      <a class="dropdown-item" href="/admin/posts/add">Publicar algo novo</a>
+  {{#if user}}
+    <div class="dropdown mr-5">
+      <button class="btn btn-outline-primary dropdown-toggle menu-btn" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Menu
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="/categorias">Categorias salvas</a>
+        <a class="dropdown-item" href="/admin/categoria/add">Criar uma categoria</a>
+        <a class="dropdown-item" href="/admin/posts">Minhas publicações</a>
+        <a class="dropdown-item" href="/admin/posts/add">Publicar algo novo</a>
+      </div>
     </div>
-  </div>
+    <div class="user_data">
+      <p>Seja bem vindo: {{user.name}}</p>
+      <p> / </p>
+      <a href="/user/logout" class="btn btn-outline-secondary">Sair</a>
+    </div>
+  {{else}}
+    <div class="ml-4" id="navbarNav">
+      <ul class="navbar-nav nav_items">
+        <li class="nav-item">
+          <a class="nav-link" href="/user/login">Login<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/cadastro">Criar conta</a>
+        </li>
+      </ul>
+    </div>
+  {{/if}}
   <a class="navbar-brand" href="/">
     <img src="/img/death-star-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     That's no moon
