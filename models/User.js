@@ -1,4 +1,3 @@
-// import mongoose from "mongoose";
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -16,8 +15,8 @@ const User = new Schema({
     required: true
   },
   isAdmin: {
-    type: Number,
-    default: 0
+    type: Boolean,
+    default: false
   }
 })
 

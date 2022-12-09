@@ -12,29 +12,29 @@
       <div class="col">
         <div class="form-group">
           <label for="name" class="label-form">Seu nome</label>
-          <input type="text" class="form-control" name="name" placeholder="Digite seu nome">
+          <input type="text" class="form-control" name="name" placeholder="Digite seu nome" value="{{user.name}}">
         </div>
       </div>
       <div class="col">
         <div class="form-group col">
           <label for="email" class="label-form">Seu e-mail</label>
-          <input type="email" class="form-control" name="email" placeholder="Digite seu email">
+          <input type="email" class="form-control" name="email" placeholder="Digite seu email" value="{{user.email}}">
         </div>
       </div>
     </div>
     <div>
       <label for="password" class="label-form">Senha</label>
-      <input type="password" class="form-control" name="password" placeholder="Digite sua senha">
+      <input type="password" class="form-control" name="password" placeholder="Digite sua senha" value="{{user.password}}">
       <br>
       <label for="password2" class="label-form">Repita a senha</label>
-      <input type="password" class="form-control" name="password2" placeholder="Confirme sua senha">
+      <input type="password" class="form-control" name="password2" placeholder="Confirme sua senha" value="{{user.password}}">
     </div>
     <br>
     <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" id="isAdmin" value="false" name="isAdmin">
+      <input class="form-check-input" type="checkbox" id="isAdmin" value='false' name="isAdmin">
       <label class="form-check-label" for="isAdmin">Administrador?</label>
     </div>
     <br>
-    <button type="submit" class="btn btn-outline-primary">Cadastrar</button>
+    <button type="submit" class="btn btn-outline-primary">Atualizar</button>
     <form>
 </div>

@@ -5,6 +5,7 @@ const router = express.Router()
 const Categorias = mongoose.model('categorias')
 const Post = mongoose.model('posts')
 const {isAdmin} = require('../helpers/isAdmin.cjs')
+const User = mongoose.model('users')
 
 require('../models/Categoria.cjs')
 require('../models/Post.cjs')
@@ -14,9 +15,10 @@ router.get('/', isAdmin, (req, res) => {
   res.render('admin/index')
 })
 
-//Página de categorias
+//Página de categorias cadastradas
   router.get('/categorias', isAdmin, (req, res) => {
-    Categorias.find().sort({date: -1})
+    Categorias.find()
+    .sort({date: -1})
     .then((categorias) => {
       res.render('./admin/categorias', {categorias: categorias})})
     .catch((err) => {
@@ -169,11 +171,11 @@ router.get('/', isAdmin, (req, res) => {
           res.redirect('/admin/posts')
       })
     })
-  .catch((err) => {
-    req.flash('error_msg', 'Publicação não econtrada.')
-    res.redirect('/admin/posts')
+    .catch((err) => {
+      req.flash('error_msg', 'Publicação não econtrada.')
+      res.redirect('/admin/posts')
+    })
   })
-})
 //Rota para editar publicação
   router.post('/posts/edit', isAdmin, (req, res) => {
     Post.findOne({_id: req.body.id})
@@ -210,5 +212,45 @@ router.get('/', isAdmin, (req, res) => {
         res.redirect('/admin/posts')
     })
   })
+
+//Rota da página de usuários cadastrados
+  router.get('/users', (req, res) => {
+    User.find()
+    .sort({data: -1})
+    .then((users) => {
+      res.render('admin/users', {users: users})})
+    .catch((err) => {
+      req.flash('error_msg', 'Erro ao listar usuários cadastrados!' + err)
+      res.redirect('/user/cadastro')
+    })
+  })
+//Rota para localizar 'x' usuário
+  router.get('/users/edit/:id', (req, res) => {
+    User.findOne({_id: req.params.id})
+    .then((user) => {
+      res.render('admin/editUser', {user: user})
+    })
+    .catch((err) => {
+      req.flash('error_msg', 'Usuário não econtrado.')
+      res.redirect('/user/cadastro')
+    })
+  })
+//Rota para excluir um usuário
+  router.get('/users/excluir/:id', (req, res) => {
+    User.findOne({id:req.body.id})
+    .then((user) => {
+      let userName = user.name
+      User.deleteOne({id: req.params.id})
+        .then(() => {
+          req.flash('success_msg', 'O usuário ' + "'" + userName + "'" + ' foi excluído com sucesso!')
+          res.redirect('/admin/users')})
+        .catch((err) => {
+          req.flash('error_msg', 'Houve um erro na exclusão deste usuário. Contate o suporte!')
+          res.redirect('/admin/users')
+        })
+    })
+  })
+
+
 
 module.exports = router

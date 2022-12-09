@@ -3,6 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const { default: isAdmin } = require('../helpers/isAdmin.cjs')
 
 require('../models/User')
 const User = mongoose.model('users')
@@ -11,6 +12,7 @@ const User = mongoose.model('users')
   router.get('/cadastro', (req, res) => {
     res.render('users/cadastro')
   })
+
 //Rota de envio de cadastro + validação
   router.post('/cadastro', (req, res) => {
 
@@ -48,9 +50,9 @@ const User = mongoose.model('users')
           const newUser = new User({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
-            isAdmin: req.body.isAdmin 
+            password: req.body.password
           })
+          // console.log(newUser.isAdmin)
             //Hasheando a senha
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
