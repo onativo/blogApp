@@ -1,6 +1,6 @@
 if(process.env.NODE_ENV = 'blogApp-prod'){
   module.exports = {
-    mongoURI: "mongodb+srv://vini:cr7NadKub8zaHJvt@blogapp-prod.opnieg2.mongodb.net/test"
+    mongoURI: "mongodb+srv://vini:<password>@blogapp-prod.opnieg2.mongodb.net/test"
   }
 }else{
   module.exports = {
