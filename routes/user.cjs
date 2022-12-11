@@ -84,7 +84,6 @@ const User = mongoose.model('users')
       })
     }
   })
-
 //Rota de login
   router.get('/login', (req, res) => {
     res.render('users/login')

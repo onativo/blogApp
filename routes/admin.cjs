@@ -2,13 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const router = express.Router()
-const Categorias = mongoose.model('categorias')
-const Post = mongoose.model('posts')
 const {isAdmin} = require('../helpers/isAdmin.cjs')
+
+require('../models/Post.cjs')
+const Post = mongoose.model('posts')
+require('../models/Categoria.cjs')
+const Categorias = mongoose.model('categorias')
+require('../models/User')
 const User = mongoose.model('users')
 
-require('../models/Categoria.cjs')
-require('../models/Post.cjs')
 
 //Rota do admin
 router.get('/', (req, res) => {
@@ -124,7 +126,7 @@ router.get('/', (req, res) => {
       res.redirect('/admin/posts')
     })
   })
-//Rota que popula categorias na página de publicações
+//Rota que adiciona categorias na página de publicações
   router.get('/posts/add', (req, res) => {
     Categorias.find()
     .then((categorias) => {
@@ -227,19 +229,20 @@ router.get('/', (req, res) => {
       res.redirect('/user/cadastro')
     })
   })
-//Rota para página de edição de 'x' usuário
-  router.get('/users/edit/:id',  (req, res) => {
-    User.findOne({_id: req.params.id})
+//Rota para página de 'x' usuário
+  router.get('/users/edit/:id', (req, res) => {
+    User.findOne({id: req.params.id})
     .then((user) => {
       res.render('admin/editUser', {user: user})
     })
     .catch((err) => {
-      req.flash('error_msg', 'Usuário não econtrado.')
-      res.redirect('/user/cadastro')
+      req.flash('error_msg', 'Erro ao localizar usuário, contate o suporte')
+      res.redirect('admin/users')
     })
   })
-//Rota para postar edição de um usuário
-  router.post('/admin/update', (req, res) => {
+
+//Rota para postar edição de usuário
+  router.post('/cadastro', (req, res) => {
     User.findOne({id: req.body.id})
     .then((user) => {
       user.name = req.body.name
@@ -248,15 +251,22 @@ router.get('/', (req, res) => {
       user.isAdmin = req.body.isAdmin
       user.save()
       .then(() => {
-        req.flash('success_msg', 'usuário atualizado')
+        req.flash('success_msg', 'Atualizado')
+        res.redirect('admin/users')
       })
       .catch((err) => {
-        req.flash('error_msg', 'erro ao atualizar: ' + err)
+        req.flash('error_msg', 'Não atualizado')
+        res.redirect('admin/users')
       })
     })
+    .catch((err) => {
+      req.flash('error_msg', 'Erro ao atualizar, contate o suporte')
+      res.redirect('/')
+    })
   })
+
 //Rota para excluir um usuário
-  router.get('/admin/excluir/:id',  (req, res) => {
+  router.get('/users/excluir/:id',  (req, res) => {
     User.findOne({id:req.body.id})
     .then((user) => {
       let userName = user.name
@@ -270,16 +280,5 @@ router.get('/', (req, res) => {
         })
     })
   })
-//Rota de atualização de cadastro
-router.get('/admin/update/:id', (req, res) => {
-  User.findOne({id: req.params.id})
-  .then(() => {
-    req.flash('success_msg', 'Usuário atualizado')
-  })
-  .catch((err) => {
-    req.flash('error_msg', 'Falha ao atualizar user')
-  })
-})
-
 
 module.exports = router
