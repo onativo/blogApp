@@ -11,12 +11,13 @@ require('../models/Categoria.cjs')
 require('../models/Post.cjs')
 
 //Rota do admin
-router.get('/', isAdmin, (req, res) => {
+router.get('/', (req, res) => {
   res.render('admin/index')
 })
 
+    //Rota de controle de categorias
 //Página de categorias cadastradas
-  router.get('/categorias', isAdmin, (req, res) => {
+  router.get('/categorias', (req, res) => {
     Categorias.find()
     .sort({date: -1})
     .then((categorias) => {
@@ -27,11 +28,11 @@ router.get('/', isAdmin, (req, res) => {
     })
   })
 //Adição de categorias
-  router.get('/categoria/add', isAdmin, (req, res) => {
+  router.get('/categoria/add', (req, res) => {
     res.render('./admin/addCategoria')
   })
-//Criação de categorias
-  router.post('/categoria/nova', isAdmin, (req, res) => {
+//Rota de criação de categoria
+  router.post('/categoria/nova', (req, res) => {
     //Form validation
     var errors = []
     if(!req.body.nome || req.body.nome == undefined || req.body.nome == null || req.body.nome.length < 5){
@@ -66,8 +67,8 @@ router.get('/', isAdmin, (req, res) => {
       })
     }
   })
-//Rota para localizar 'x' categoria
-  router.get('/categorias/edit/:id', isAdmin, (req, res) => {
+//Rota para editar uma categoria
+  router.get('/categorias/edit/:id', (req, res) => {
     Categorias.findOne({_id: req.params.id})
     .then((categorias) => {
         res.render('admin/editCategorias', {categoria: categorias})})
@@ -76,8 +77,8 @@ router.get('/', isAdmin, (req, res) => {
         res.redirect('/admin/categorias')
       })
   })
-//Rota para editar categoria
-  router.post('/categorias/edit', isAdmin, (req, res) => {
+//Rota para página de categorias cadastradas
+  router.post('/categorias/edit', (req, res) => {
     Categorias.findOne({_id: req.body.id})
     .then((categoria) => {
       categoria.nome = req.body.nome
@@ -96,7 +97,7 @@ router.get('/', isAdmin, (req, res) => {
     })
   })
 //Rota para excluir categoria
-  router.post('/categorias/excluir', isAdmin, (req, res) => {
+  router.post('/categorias/excluir', (req, res) => {
     Categorias.findOne({id: req.body.id})
     .then((categoria) => {
       let cat = categoria.nome
@@ -109,8 +110,10 @@ router.get('/', isAdmin, (req, res) => {
         res.redirect('/admin/categorias')})
     })
   })
-//Rota da página de publicações
-  router.get('/posts', isAdmin, (req, res) => {
+  
+    //Rota de controle de publicações  
+//Rota da página de publicações enviadas
+  router.get('/posts', (req, res) => {
     Post.find()
     .populate('categoria')
     .sort({data: 'desc'})
@@ -121,8 +124,8 @@ router.get('/', isAdmin, (req, res) => {
       res.redirect('/admin/posts')
     })
   })
-//Rota de criação de publicação
-  router.get('/posts/add', isAdmin, (req, res) => {
+//Rota que popula categorias na página de publicações
+  router.get('/posts/add', (req, res) => {
     Categorias.find()
     .then((categorias) => {
       res.render('admin/addPost', {categorias: categorias})})
@@ -132,7 +135,7 @@ router.get('/', isAdmin, (req, res) => {
     })
   })
 //Rota de adição de publicações
-  router.post('/posts/new', isAdmin, (req, res) => {
+  router.post('/posts/new', (req, res) => {
     var err = []
     if(req.body.categoria == "0"){
       err.push({text: 'Categoria inválida, escolha uma categoria.'})
@@ -158,9 +161,8 @@ router.get('/', isAdmin, (req, res) => {
       })
     }
   })
-
-//Rota para localizar 'x' publicação
-  router.get('/posts/edit/:id', isAdmin, (req, res) => {
+//Rota para página de edução de 'x' publicação
+  router.get('/posts/edit/:id', (req, res) => {
     Post.findOne({_id: req.params.id})
     .then((post) => {
       Categorias.find()
@@ -176,8 +178,8 @@ router.get('/', isAdmin, (req, res) => {
       res.redirect('/admin/posts')
     })
   })
-//Rota para editar publicação
-  router.post('/posts/edit', isAdmin, (req, res) => {
+//Rota para postar edição de publicação
+  router.post('/posts/edit',  (req, res) => {
     Post.findOne({_id: req.body.id})
     .then((post) => {
       post.title = req.body.title
@@ -195,11 +197,10 @@ router.get('/', isAdmin, (req, res) => {
     .catch((err) => {
       req.flash('error_msg', 'Edição cancelada pelo usuário: ' + err)
       res.redirect('/admin/posts')
-      console.log(err)
     })
   })
-// //Rota para excuir publicações
-  router.get('/posts/excluir/:id', isAdmin, (req, res) => {
+//Rota para excuir determinada publicação
+  router.get('/posts/excluir/:id',  (req, res) => {
     Post.findOne({id: req.body.id})
     .then((post) => {
       let titulo = post.title
@@ -213,8 +214,10 @@ router.get('/', isAdmin, (req, res) => {
     })
   })
 
+
+    //Rotas de controle de usuarios cadastrados
 //Rota da página de usuários cadastrados
-  router.get('/users', isAdmin, (req, res) => {
+  router.get('/users',  (req, res) => {
     User.find()
     .sort({data: -1})
     .then((users) => {
@@ -224,8 +227,8 @@ router.get('/', isAdmin, (req, res) => {
       res.redirect('/user/cadastro')
     })
   })
-//Rota para localizar 'x' usuário
-  router.get('/users/edit/:id', isAdmin, (req, res) => {
+//Rota para página de edição de 'x' usuário
+  router.get('/users/edit/:id',  (req, res) => {
     User.findOne({_id: req.params.id})
     .then((user) => {
       res.render('admin/editUser', {user: user})
@@ -235,8 +238,25 @@ router.get('/', isAdmin, (req, res) => {
       res.redirect('/user/cadastro')
     })
   })
+//Rota para postar edição de um usuário
+  router.post('/admin/update', (req, res) => {
+    User.findOne({id: req.body.id})
+    .then((user) => {
+      user.name = req.body.name
+      user.email = req.body.email
+      user.password = req.body.password
+      user.isAdmin = req.body.isAdmin
+      user.save()
+      .then(() => {
+        req.flash('success_msg', 'usuário atualizado')
+      })
+      .catch((err) => {
+        req.flash('error_msg', 'erro ao atualizar: ' + err)
+      })
+    })
+  })
 //Rota para excluir um usuário
-  router.get('/users/excluir/:id', isAdmin, (req, res) => {
+  router.get('/admin/excluir/:id',  (req, res) => {
     User.findOne({id:req.body.id})
     .then((user) => {
       let userName = user.name
@@ -250,7 +270,16 @@ router.get('/', isAdmin, (req, res) => {
         })
     })
   })
-
+//Rota de atualização de cadastro
+router.get('/admin/update/:id', (req, res) => {
+  User.findOne({id: req.params.id})
+  .then(() => {
+    req.flash('success_msg', 'Usuário atualizado')
+  })
+  .catch((err) => {
+    req.flash('error_msg', 'Falha ao atualizar user')
+  })
+})
 
 
 module.exports = router

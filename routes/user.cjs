@@ -50,8 +50,10 @@ const User = mongoose.model('users')
           const newUser = new User({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            isAdmin: req.body.isAdmin
           })
+          console.log(newUser.isAdmin)
           // console.log(newUser.isAdmin)
             //Hasheando a senha
           bcrypt.genSalt(10, (err, salt) => {
