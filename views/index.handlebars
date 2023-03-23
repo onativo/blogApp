@@ -8,23 +8,20 @@
   <hr>
   <h2>Publicações mais recentes</h2>
 
-{{#each posts}}
-  <div class="card mt-3">
-    <div class="card-body">
-      <h4>{{title}}</h4>
-      <p>{{description}}</p>
-      <a href="/post/{{slug}}"class="btn btn-outline-primary">Ler mais...</a>
-      <hr>
-      <small>Categoria: {{categoria.nome}}</small>
-      <br>
-      <small>Publicado em: {{data}}</small>
+<div class="col-12 d-flex flex-wrap justify-content-between">
+  {{#each posts}}
+    <div class="card mt-3 mw-5 m-4">
+      <div class="card-body" style="width: 14rem; height: 20rem">
+        <h4>{{title}}</h4>
+        <p>{{description}}</p>
+        <hr>
+        <small>Espécie: {{categoria.nome}}</small>
+        <a href="/post/{{slug}}"class="btn btn-outline-primary" style="width: fit-content; margin-top:50px;">Conhecer</a>
+      </div>
     </div>
-  </div>
-  <div class="d-flex m-auto" style="justify-content: center;">
-    <div style="background-color: #007bff; width: 50px; height: 2.5px; margin-top: 12px; margin-bottom: -1px"></div>
-  </div>
-{{else}}
-  <div class="d-flex mt-3">
-    <img src="/img/such-empty.png" alt="such-empty" style="margin: auto">
-  </div>
-{{/each}}
+  {{else}}
+    <div class="d-flex mt-3">
+      <img src="/img/such-empty.png" alt="such-empty" style="margin: auto">
+    </div>
+  {{/each}}
+</div>
